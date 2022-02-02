@@ -70,4 +70,12 @@ export class UserService {
 
     return user;
   }
+
+  async logout(response): Promise<object>{
+    response.clearCookie('jwt')
+    
+    return {
+      message: 'Success'
+    }
+  }
 }
