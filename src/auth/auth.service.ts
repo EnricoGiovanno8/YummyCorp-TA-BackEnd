@@ -34,7 +34,9 @@ export class AuthService {
 
     const hashedPassword = await bcrypt.hash(password, 10);
     const newData = { email, password: hashedPassword };
-    return await this.userService.create(newData);
+    const newUser = await this.userService.create(newData);
+
+    return await this.userService.findOne(newUser.id)
   }
 
   async login(body: LoginDto): Promise<{ user: User; token: string }> {
