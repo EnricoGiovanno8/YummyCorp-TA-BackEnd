@@ -16,7 +16,34 @@ export class ProductService {
     private readonly sizeRepository: Repository<Size>,
   ) {}
 
-  async findAll(): Promise<Product[]> {
-    return await this.productRepository.find({ relations: ['productStocks', 'productStocks.size'] });
+  async findAllPaginated(page = 1): Promise<any> {
+    const take = 1;
+
+    const [products, total] = await this.productRepository.findAndCount({
+      take,
+      skip: (page - 1) * take,
+      relations: ['productStocks', 'productStocks.size'],
+    });
+
+    return {
+      data: products,
+      meta: {
+        total,
+        page,
+        lastPage: Math.ceil(total / take),
+      },
+    };
+  }
+
+  async findOneProduct(id: number) {
+    return await this.productRepository.findOne(id, {
+      relations: ['productStocks', 'productStocks.size'],
+    });
+  }
+
+  async updateProduct(id: number, data: any) {
+    await this.productRepository.update(id, data);
+
+    return this.findOneProduct(id);
   }
 }
