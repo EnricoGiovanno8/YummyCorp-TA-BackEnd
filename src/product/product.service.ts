@@ -17,10 +17,6 @@ export class ProductService {
   ) {}
 
   async findAll(): Promise<Product[]> {
-    return await this.productRepository.find({ relations: ['stock'] });
-  }
-
-  async findStock(): Promise<ProductStock[]> {
-    return await this.productStockRepository.find({ relations: ['size'] });
+    return await this.productRepository.find({ relations: ['productStocks', 'productStocks.size'] });
   }
 }

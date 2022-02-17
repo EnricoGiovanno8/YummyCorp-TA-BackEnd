@@ -1,6 +1,10 @@
-import { Exclude } from 'class-transformer';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { ProductStock } from './product-stock.entity';
+
+export enum GenderType {
+  Men = 'Men',
+  Women = 'Women',
+}
 
 @Entity('products')
 export class Product {
@@ -14,13 +18,8 @@ export class Product {
   brand: string;
 
   @Column()
-  gender: 'Men' | 'Women';
+  gender: GenderType;
 
-  @Column()
-  price: number;
-
-  @OneToMany(() => ProductStock, (productStock) => productStock.product, {
-    cascade: true,
-  })
-  stock: ProductStock[];
+  @OneToMany(() => ProductStock, (productStock) => productStock.product)
+  productStocks: ProductStock[];
 }

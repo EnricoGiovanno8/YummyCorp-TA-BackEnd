@@ -11,8 +11,4 @@ export class ProductController {
     async getAllProducts() {
         return await this.productService.findAll()
     }
-    @Get('stock')
-    async getstock() {
-        return await this.productService.findStock()
-    }
 }

@@ -1,20 +1,27 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Product } from './product.entity';
 import { Size } from './size.entity';
 
-@Entity('product-stock')
+@Entity('product-stocks')
 export class ProductStock {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
-  quantity: number;
+  price: number;
 
-  @ManyToOne(() => Product, (product) => product.stock)
-  @JoinColumn({name: "productId"})
-  product: Product;
+  @Column()
+  stock: number
 
-  @ManyToOne(() => Size, (size) => size.stock)
-  @JoinColumn({name: "sizeId"})
-  size: Size;
+  // @Column()
+  // productId: number // product entity many to one
+
+  // @Column()
+  // sizeId: number// size entity many to one
+
+  @ManyToOne(() => Product, product => product.productStocks)
+  product: Product
+
+  @ManyToOne(() => Size, size => size.productStocks)
+  size: Size
 }
