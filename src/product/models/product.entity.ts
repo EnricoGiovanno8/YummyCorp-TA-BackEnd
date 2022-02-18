@@ -20,7 +20,7 @@ export class Product {
   @Column()
   gender: ProductGenderType;
 
-  @Column()
+  @Column({default: "default-image.png"})
   image: string;
 
   @OneToMany(() => ProductStock, (productStock) => productStock.product, {

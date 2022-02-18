@@ -7,11 +7,11 @@ export class ProductStock {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ default: 0 })
   price: number;
 
-  @Column()
-  stock: number
+  @Column({ default: 0 })
+  stock: number;
 
   // @Column()
   // productId: number // product entity many to one
@@ -19,9 +19,9 @@ export class ProductStock {
   // @Column()
   // sizeId: number// size entity many to one
 
-  @ManyToOne(() => Product, product => product.productStocks)
-  product: Product
+  @ManyToOne(() => Product, (product) => product.productStocks)
+  product: Product;
 
-  @ManyToOne(() => Size, size => size.productStocks)
-  size: Size
+  @ManyToOne(() => Size, (size) => size.productStocks)
+  size: Size;
 }

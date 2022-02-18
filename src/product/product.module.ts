@@ -6,10 +6,12 @@ import { Size } from './models/size.entity';
 import { ProductController } from './product.controller';
 import { ProductService } from './product.service';
 import { UploadProductController } from './upload-product.controller';
+import { SizeService } from './size.service';
+import { ProductStockService } from './product-stock.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Product, ProductStock, Size])],
   controllers: [ProductController,  UploadProductController],
-  providers: [ProductService],
+  providers: [ProductService, SizeService, ProductStockService],
 })
 export class ProductModule {}

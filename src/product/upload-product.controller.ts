@@ -1,20 +1,27 @@
 import {
+  BadRequestException,
   Controller,
+  Get,
+  Param,
   Post,
+  Res,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { Response } from 'express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
+import { ProductService } from './product.service';
 
 @Controller()
 export class UploadProductController {
+  constructor(private readonly productService: ProductService) {}
   @Post('product-image/:id')
   @UseInterceptors(
     FileInterceptor('image', {
       storage: diskStorage({
-        destination: '/assets/product-image',
+        destination: './assets/product-images',
         filename(_, file, callback) {
           const randomName = Array(8)
             .fill(null)
@@ -25,7 +32,24 @@ export class UploadProductController {
       }),
     }),
   )
-  uploadFile(@UploadedFile() file: Express.Multer.File) {
-    console.log(file);
+  async uploadFile(
+    @UploadedFile() file: Express.Multer.File,
+    @Param('id') id: number,
+  ) {
+    const product = await this.productService.findOneProduct(id);
+
+    if (product) {
+      await this.productService.updateProduct(id, { image: file.filename });
+      return {
+        message: 'Upload Image Success',
+      };
+    } else {
+      throw new BadRequestException('Product Not Found');
+    }
+  }
+
+  @Get(':path')
+  async getImage(@Param('path') path: any, @Res() res: Response) {
+    res.sendFile(path, { root: 'assets/product-images' });
   }
 }
