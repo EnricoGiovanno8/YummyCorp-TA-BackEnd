@@ -28,6 +28,10 @@ export class ProductService {
       },
     };
   }
+  
+  async createProduct(data: any): Promise<Product> {
+    return await this.productRepository.save(data);
+  }
 
   async findOneProduct(condition: any): Promise<Product> {
     return await this.productRepository.findOne(condition, {
@@ -35,8 +39,8 @@ export class ProductService {
     });
   }
 
-  async createProduct(data: any): Promise<Product> {
-    return await this.productRepository.save(data)
+  async deleteProduct(id: number): Promise<any> {
+    return this.productRepository.delete(id);
   }
 
   async updateProduct(id: number, data: any): Promise<Product> {

@@ -2,6 +2,7 @@ import {
   BadRequestException,
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   ParseIntPipe,
@@ -73,11 +74,11 @@ export class ProductController {
     @Param('id', ParseIntPipe) id: number,
     @Body() body: ProductUpdateDto,
   ) {
-    const productExist = await this.productService.findOneProduct(id)
+    const productExist = await this.productService.findOneProduct(id);
     if (!productExist) {
       throw new BadRequestException(`Product Doesn't Exist`);
     }
-    
+
     const { productStocks, ...data } = body;
 
     if (!productStocks) {
@@ -102,5 +103,13 @@ export class ProductController {
 
       return this.productService.findOneProduct(id);
     }
+  }
+
+  @Delete(':id')
+  async deleteProduct(@Param('id') id: number) {
+    await this.productService.deleteProduct(id);
+    return {
+      message: `Product with ID ${id} has been deleted`,
+    };
   }
 }

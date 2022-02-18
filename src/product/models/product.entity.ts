@@ -20,11 +20,9 @@ export class Product {
   @Column()
   gender: ProductGenderType;
 
-  @Column({default: "default-image.png"})
+  @Column({ default: 'default-image.png' })
   image: string;
 
-  @OneToMany(() => ProductStock, (productStock) => productStock.product, {
-    cascade: true,
-  })
+  @OneToMany(() => ProductStock, (productStock) => productStock.product)
   productStocks: ProductStock[];
 }

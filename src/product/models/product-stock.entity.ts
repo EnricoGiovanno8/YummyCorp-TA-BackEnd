@@ -19,9 +19,13 @@ export class ProductStock {
   // @Column()
   // sizeId: number// size entity many to one
 
-  @ManyToOne(() => Product, (product) => product.productStocks)
+  @ManyToOne(() => Product, (product) => product.productStocks, {
+    onDelete: 'CASCADE',
+  })
   product: Product;
 
-  @ManyToOne(() => Size, (size) => size.productStocks)
+  @ManyToOne(() => Size, (size) => size.productStocks, {
+    onDelete: 'CASCADE',
+  })
   size: Size;
 }

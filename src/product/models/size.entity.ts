@@ -9,8 +9,6 @@ export class Size {
   @Column()
   name: string;
 
-  @OneToMany(() => ProductStock, (productStock) => productStock.size, {
-    cascade: true,
-  })
+  @OneToMany(() => ProductStock, (productStock) => productStock.size)
   productStocks: ProductStock[];
 }
