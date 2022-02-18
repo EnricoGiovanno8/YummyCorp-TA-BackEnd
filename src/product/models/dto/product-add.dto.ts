@@ -4,18 +4,17 @@ import {
   IsIn,
   IsInt,
   IsNotEmpty,
-  IsOptional,
   IsString,
   ValidateNested,
 } from 'class-validator';
 import { ProductGenderType } from '../product.entity';
 
 class ProductStock {
-  @IsOptional()
+  @IsNotEmpty()
   @IsInt()
   price?: number;
 
-  @IsOptional()
+  @IsNotEmpty()
   @IsInt()
   stock?: number;
 
@@ -24,20 +23,20 @@ class ProductStock {
   size?: string;
 }
 
-export class ProductUpdateDto {
-  @IsOptional()
+export class ProductAddDto {
+  @IsNotEmpty()
   @IsString()
   name?: string;
 
-  @IsOptional()
+  @IsNotEmpty()
   @IsString()
   brand?: string;
 
-  @IsOptional()
+  @IsNotEmpty()
   @IsIn([ProductGenderType.Men, ProductGenderType.Women])
   gender?: ProductGenderType;
 
-  @IsOptional()
+  @IsNotEmpty()
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => ProductStock)

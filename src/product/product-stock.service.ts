@@ -10,17 +10,21 @@ export class ProductStockService {
     private readonly productStockRepository: Repository<ProductStock>,
   ) {}
 
-  async createStock(data) {
+  async createStock(data: any): Promise<ProductStock> {
     return await this.productStockRepository.save(data);
   }
 
-  async findOneStock(condition) {
+  async findOneStock(condition: any): Promise<ProductStock> {
     return await this.productStockRepository.findOne(condition, {
       relations: ['product', 'size'],
     });
   }
 
-  async updateStockFromProduct(productId: any, sizeId: any, data: any) {
+  async updateStockFromProduct(
+    productId: any,
+    sizeId: any,
+    data: any,
+  ): Promise<any> {
     const stock = await this.findOneStock({ product: productId, size: sizeId });
 
     if (stock) {

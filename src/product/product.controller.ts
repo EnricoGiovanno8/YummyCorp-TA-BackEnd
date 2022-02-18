@@ -1,12 +1,15 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Get,
   Param,
   ParseIntPipe,
   Patch,
+  Post,
   Query,
 } from '@nestjs/common';
+import { ProductAddDto } from './models/dto/product-add.dto';
 import { ProductUpdateDto } from './models/dto/product-update.dto';
 import { ProductStockService } from './product-stock.service';
 import { ProductService } from './product.service';
@@ -25,11 +28,56 @@ export class ProductController {
     return await this.productService.findAllPaginated(page);
   }
 
+  @Post()
+  async addProduct(@Body() body: ProductAddDto) {
+    const { productStocks, ...data } = body;
+
+    const productExist = await this.productService.findOneProduct({
+      name: data.name,
+    });
+
+    if (productExist) {
+      throw new BadRequestException('Product Already Exist');
+    } else {
+      const newProduct = await this.productService.createProduct(data);
+
+      await Promise.all(
+        productStocks.map(async (productStock) => {
+          const { size, ...dataStock } = productStock;
+          const sizeExist = await this.sizeService.findOneSize({ name: size });
+
+          if (!sizeExist) {
+            const newSize = await this.sizeService.createSize({ name: size });
+
+            await this.productStockService.createStock({
+              ...dataStock,
+              product: newProduct.id,
+              size: newSize.id,
+            });
+          } else {
+            await this.productStockService.createStock({
+              ...dataStock,
+              product: newProduct.id,
+              size: sizeExist.id,
+            });
+          }
+        }),
+      );
+
+      return await this.productService.findOneProduct(newProduct.id);
+    }
+  }
+
   @Patch(':id')
   async updateProduct(
     @Param('id', ParseIntPipe) id: number,
     @Body() body: ProductUpdateDto,
   ) {
+    const productExist = await this.productService.findOneProduct(id)
+    if (!productExist) {
+      throw new BadRequestException(`Product Doesn't Exist`);
+    }
+    
     const { productStocks, ...data } = body;
 
     if (!productStocks) {
@@ -42,29 +90,17 @@ export class ProductController {
 
       await Promise.all(
         productStocks.map(async (productStock) => {
-          const { size, ...dataStock } = productStock
+          const { size, ...dataStock } = productStock;
           const newSize = await this.sizeService.updateSize(size);
-          await this.productStockService.updateStockFromProduct(id, newSize.id, dataStock)
+          await this.productStockService.updateStockFromProduct(
+            id,
+            newSize.id,
+            dataStock,
+          );
         }),
       );
 
-      return this.productService.findOneProduct(id)
+      return this.productService.findOneProduct(id);
     }
   }
 }
-
-// let newBody = {};
-// if (name) {
-//   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-//   newBody = { ...newBody, name };
-// }
-// if (brand) {
-//   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-//   newBody = { ...newBody, brand };
-// }
-// if (gender) {
-//   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-//   newBody = { ...newBody, gender };
-// }
-// console.log('body', body);
-// console.log('newBody', newBody);

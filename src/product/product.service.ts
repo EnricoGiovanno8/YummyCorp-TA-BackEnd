@@ -29,10 +29,14 @@ export class ProductService {
     };
   }
 
-  async findOneProduct(id: number): Promise<Product> {
-    return await this.productRepository.findOne(id, {
+  async findOneProduct(condition: any): Promise<Product> {
+    return await this.productRepository.findOne(condition, {
       relations: ['productStocks', 'productStocks.size'],
     });
+  }
+
+  async createProduct(data: any): Promise<Product> {
+    return await this.productRepository.save(data)
   }
 
   async updateProduct(id: number, data: any): Promise<Product> {
