@@ -11,7 +11,7 @@ export class ProductService {
   ) {}
 
   async findAllPaginated(page = 1): Promise<any> {
-    const take = 1;
+    const take = 10;
 
     const [products, total] = await this.productRepository.findAndCount({
       take,
