@@ -28,8 +28,9 @@ export class ProductController {
   async getProducts(
     @Query('keyword') keyword: string,
     @Query('page', ParseIntPipe) page = 1,
+    @Query('gender') gender: string,
   ) {
-    return await this.productService.findAllPaginated(keyword,page);
+    return await this.productService.findAllPaginated(keyword, page, gender);
   }
 
   @Post()

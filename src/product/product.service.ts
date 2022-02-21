@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Like, Repository } from 'typeorm';
+import { Equal, Like, Repository } from 'typeorm';
 import { Product } from './models/product.entity';
 
 @Injectable()
@@ -10,24 +10,46 @@ export class ProductService {
     private readonly productRepository: Repository<Product>,
   ) {}
 
-  async findAllPaginated(keyword: string, page = 1): Promise<any> {
+  async findAllPaginated(
+    keyword: string,
+    page = 1,
+    gender: string,
+  ): Promise<any> {
     const take = 10;
 
-    const [products, total] = await this.productRepository.findAndCount({
-      take,
-      skip: (page - 1) * take,
-      relations: ['productStocks', 'productStocks.size'],
-      where: [{ name: Like(`%${keyword}%`) }],
-    });
+    if (gender === 'Men' || gender === 'Women') {
+      const [products, total] = await this.productRepository.findAndCount({
+        take,
+        skip: (page - 1) * take,
+        relations: ['productStocks', 'productStocks.size'],
+        where: [{ name: Like(`%${keyword}%`), gender }],
+      });
 
-    return {
-      data: products,
-      meta: {
-        total,
-        page,
-        lastPage: Math.ceil(total / take),
-      },
-    };
+      return {
+        data: products,
+        meta: {
+          total,
+          page,
+          lastPage: Math.ceil(total / take),
+        },
+      };
+    } else {
+      const [products, total] = await this.productRepository.findAndCount({
+        take,
+        skip: (page - 1) * take,
+        relations: ['productStocks', 'productStocks.size'],
+        where: [{ name: Like(`%${keyword}%`) }],
+      });
+
+      return {
+        data: products,
+        meta: {
+          total,
+          page,
+          lastPage: Math.ceil(total / take),
+        },
+      };
+    }
   }
 
   async createProduct(data: any): Promise<Product> {
