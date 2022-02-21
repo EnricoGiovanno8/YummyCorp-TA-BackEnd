@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 import { Product } from './models/product.entity';
 
 @Injectable()
@@ -10,13 +10,14 @@ export class ProductService {
     private readonly productRepository: Repository<Product>,
   ) {}
 
-  async findAllPaginated(page = 1): Promise<any> {
+  async findAllPaginated(keyword: string, page = 1): Promise<any> {
     const take = 10;
 
     const [products, total] = await this.productRepository.findAndCount({
       take,
       skip: (page - 1) * take,
       relations: ['productStocks', 'productStocks.size'],
+      where: [{ name: Like(`%${keyword}%`) }],
     });
 
     return {
@@ -28,7 +29,7 @@ export class ProductService {
       },
     };
   }
-  
+
   async createProduct(data: any): Promise<Product> {
     return await this.productRepository.save(data);
   }
