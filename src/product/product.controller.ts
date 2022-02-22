@@ -33,6 +33,11 @@ export class ProductController {
     return await this.productService.findAllPaginated(keyword, page, gender);
   }
 
+  @Get(':id')
+  async getOneProduct(@Param('id') id: number) {
+    return await this.productService.findOneProduct(id);
+  }
+
   @Post()
   async addProduct(@Body() body: ProductAddDto) {
     const { productStocks, ...data } = body;
