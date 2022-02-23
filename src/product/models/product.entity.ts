@@ -1,4 +1,14 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { CartItem } from 'src/cart/models/cart-items.entity';
+import { OrderItem } from 'src/order/models/order-item.entity';
+import {
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { ProductStock } from './product-stock.entity';
 
 export enum ProductGenderType {
@@ -25,4 +35,19 @@ export class Product {
 
   @OneToMany(() => ProductStock, (productStock) => productStock.product)
   productStocks: ProductStock[];
+
+  @OneToMany(() => CartItem, (cartItem) => cartItem.product)
+  cartItems: CartItem[];
+
+  @OneToMany(() => OrderItem, (orderItem) => orderItem.product)
+  orderItems: OrderItem[];
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
+
+  @DeleteDateColumn()
+  deletedAt: Date;
 }

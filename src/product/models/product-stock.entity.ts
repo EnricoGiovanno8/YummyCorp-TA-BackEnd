@@ -1,4 +1,6 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { CartItem } from 'src/cart/models/cart-items.entity';
+import { OrderItem } from 'src/order/models/order-item.entity';
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import { Product } from './product.entity';
 import { Size } from './size.entity';
 
@@ -28,4 +30,19 @@ export class ProductStock {
     onDelete: 'CASCADE',
   })
   size: Size;
+
+  @OneToMany(() => CartItem, cartItem => cartItem.productStock)
+  cartItems: CartItem[]
+
+  @OneToMany(() => OrderItem, orderItem => orderItem.productStock)
+  orderItems: OrderItem[]
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
+
+  @DeleteDateColumn()
+  deletedAt: Date;
 }

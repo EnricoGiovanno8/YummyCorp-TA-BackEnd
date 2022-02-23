@@ -1,10 +1,13 @@
-import { Expose } from 'class-transformer';
+import { User } from 'src/user/models/user.entity';
 import {
   Column,
   CreateDateColumn,
+  DeleteDateColumn,
   Entity,
+  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { OrderItem } from './order-item.entity';
 
@@ -19,25 +22,20 @@ export class Order {
   id: number;
 
   @Column()
-  userEmail: string
-
-  @Column()
   orderNumber: string;
 
+  @ManyToOne(() => User, user => user.orders)
+  user: User
+
+  @OneToMany(() => OrderItem, orderItem => orderItem.order)
+  orderItems: OrderItem[]
+
   @CreateDateColumn()
-  date: string;
+  createdAt: Date;
 
-  @Column({ default: Status.Cart })
-  status: Status;
+  @UpdateDateColumn()
+  updatedAt: Date;
 
-  @OneToMany(() => OrderItem, (orderItem) => orderItem.order)
-  orderItems: OrderItem[];
-
-  @Expose()
-  get total(): number {
-    return this.orderItems.reduce(
-      (sum: number, i: OrderItem) => sum + i.quantity * i.productPrice,
-      0,
-    );
-  }
+  @DeleteDateColumn()
+  deletedAt: Date;
 }

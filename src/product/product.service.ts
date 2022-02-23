@@ -63,7 +63,7 @@ export class ProductService {
   }
 
   async deleteProduct(id: number): Promise<any> {
-    return this.productRepository.delete(id);
+    return this.productRepository.softDelete(id);
   }
 
   async updateProduct(id: number, data: any): Promise<Product> {
