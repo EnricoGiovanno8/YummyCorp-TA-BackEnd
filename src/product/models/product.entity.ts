@@ -1,4 +1,4 @@
-import { CartItem } from 'src/cart/models/cart-items.entity';
+import { Cart } from 'src/cart/models/cart.entity';
 import { OrderItem } from 'src/order/models/order-item.entity';
 import {
   Column,
@@ -36,8 +36,8 @@ export class Product {
   @OneToMany(() => ProductStock, (productStock) => productStock.product)
   productStocks: ProductStock[];
 
-  @OneToMany(() => CartItem, (cartItem) => cartItem.product)
-  cartItems: CartItem[];
+  @OneToMany(() => Cart, (cart) => cart.product)
+  carts: Cart[];
 
   @OneToMany(() => OrderItem, (orderItem) => orderItem.product)
   orderItems: OrderItem[];

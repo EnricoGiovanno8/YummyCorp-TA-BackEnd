@@ -1,13 +1,15 @@
+import { ProductStock } from 'src/product/models/product-stock.entity';
+import { Product } from 'src/product/models/product.entity';
+import { Size } from 'src/product/models/size.entity';
 import { User } from 'src/user/models/user.entity';
 import {
+  Column,
   CreateDateColumn,
   Entity,
-  JoinColumn,
-  OneToMany,
+  ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { CartItem } from './cart-items.entity';
 
 @Entity('carts')
 export class Cart {
@@ -15,11 +17,19 @@ export class Cart {
   id: number;
 
   @OneToOne(() => User, (user) => user.cart)
-  @JoinColumn({ name: 'userId' })
   user: User;
 
-  @OneToMany(() => CartItem, (cartItem) => cartItem.cart)
-  cartItems: CartItem[];
+  @ManyToOne(() => Product, (product) => product.carts)
+  product: Product;
+
+  @ManyToOne(() => ProductStock, (productStock) => productStock.carts)
+  productStock: ProductStock;
+
+  @ManyToOne(() => Size, (size) => size.carts)
+  size: Size;
+
+  @Column()
+  quantity: number;
 
   @CreateDateColumn()
   createdAt: Date;

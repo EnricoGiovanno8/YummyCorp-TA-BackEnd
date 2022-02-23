@@ -24,11 +24,11 @@ export class Order {
   @Column()
   orderNumber: string;
 
-  @ManyToOne(() => User, user => user.orders)
-  user: User
+  @ManyToOne(() => User, (user) => user.orders)
+  user: User;
 
-  @OneToMany(() => OrderItem, orderItem => orderItem.order)
-  orderItems: OrderItem[]
+  @OneToMany(() => OrderItem, (orderItem) => orderItem.order)
+  orderItems: OrderItem[];
 
   @CreateDateColumn()
   createdAt: Date;

@@ -1,4 +1,4 @@
-import { CartItem } from 'src/cart/models/cart-items.entity';
+import { Cart } from 'src/cart/models/cart.entity';
 import { OrderItem } from 'src/order/models/order-item.entity';
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import { ProductStock } from './product-stock.entity';
@@ -14,8 +14,8 @@ export class Size {
   @OneToMany(() => ProductStock, (productStock) => productStock.size)
   productStocks: ProductStock[];
 
-  @OneToMany(() => CartItem, cartItem => cartItem.size)
-  cartItems: CartItem[]
+  @OneToMany(() => Cart, cart => cart.size)
+  carts: Cart[]
 
   @OneToMany(() => OrderItem, orderItem => orderItem.size)
   orderItems: OrderItem[]
