@@ -48,7 +48,7 @@ export class UploadProductController {
     }
   }
 
-  @Get(':path')
+  @Get('product-image/:path')
   async getImage(@Param('path') path: any, @Res() res: Response) {
     res.sendFile(path, { root: 'assets/product-images' });
   }
