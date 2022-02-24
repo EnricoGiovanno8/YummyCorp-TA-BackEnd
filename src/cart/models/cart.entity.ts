@@ -7,8 +7,8 @@ import {
   CreateDateColumn,
   Entity,
   ManyToOne,
-  OneToOne,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
 @Entity('carts')
@@ -16,7 +16,7 @@ export class Cart {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @OneToOne(() => User, (user) => user.cart)
+  @ManyToOne(() => User, (user) => user.carts)
   user: User;
 
   @ManyToOne(() => Product, (product) => product.carts)
@@ -33,4 +33,7 @@ export class Cart {
 
   @CreateDateColumn()
   createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
 }

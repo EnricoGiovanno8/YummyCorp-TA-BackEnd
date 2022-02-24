@@ -30,7 +30,7 @@ export class AuthController {
 
   @Get('user')
   @UseGuards(AuthGuard('jwt'))
-  async getProfile(@Request() req) {
+  async getProfile(@Request() req: any) {
     return req.user;
   }
 }

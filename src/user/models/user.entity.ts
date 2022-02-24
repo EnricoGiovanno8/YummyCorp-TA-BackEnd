@@ -7,7 +7,6 @@ import {
   DeleteDateColumn,
   Entity,
   OneToMany,
-  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -23,7 +22,7 @@ export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ unique: true })
+  @Column()
   email: string;
 
   @Column({ default: 'User' })
@@ -39,11 +38,11 @@ export class User {
   @Column({ default: '' })
   address: string;
 
-  @OneToOne(() => Cart, (cart) => cart.user)
-  cart: Cart;
+  @OneToMany(() => Cart, (cart) => cart.user)
+  carts: Cart[];
 
-  @OneToMany(() => Order, order => order.user)
-  orders: Order[]
+  @OneToMany(() => Order, (order) => order.user)
+  orders: Order[];
 
   @CreateDateColumn()
   createdAt: Date;
