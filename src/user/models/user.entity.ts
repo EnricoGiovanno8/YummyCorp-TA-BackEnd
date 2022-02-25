@@ -28,6 +28,9 @@ export class User {
   @Column({ default: 'User' })
   name: string;
 
+  @Column()
+  image: string;
+
   @Column({ default: UserGenderType.Both })
   gender: UserGenderType;
 

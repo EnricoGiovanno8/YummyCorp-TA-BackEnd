@@ -3,6 +3,8 @@ import {
   Controller,
   Delete,
   Get,
+  Param,
+  Patch,
   Post,
   Request,
   UseGuards,
@@ -26,6 +28,12 @@ export class CartController {
   @UseGuards(AuthGuard('jwt'))
   async addToCart(@Request() req: any, @Body() body: AddToCartDto) {
     return await this.cartService.addToCart({ userId: req.user.id, ...body });
+  }
+
+  @Patch(':id')
+  @UseGuards(AuthGuard('jwt'))
+  async updateQuantity(@Param() id: number, @Body() body: any) {
+    return await this.cartService.update(id, body);
   }
 
   @Delete()

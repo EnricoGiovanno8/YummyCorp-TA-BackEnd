@@ -24,6 +24,9 @@ export class Order {
   @Column()
   orderNumber: string;
 
+  @Column()
+  address: string;
+
   @ManyToOne(() => User, (user) => user.orders)
   user: User;
 

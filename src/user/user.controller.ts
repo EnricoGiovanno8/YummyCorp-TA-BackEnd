@@ -6,7 +6,10 @@ import {
   Param,
   Patch,
   Post,
+  Request,
+  UseGuards,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { User } from './models/user.entity';
 import { UserService } from './user.service';
 
@@ -24,9 +27,10 @@ export class UserController {
     return await this.userService.findOne(id);
   }
 
-  @Patch(':id')
-  async update(@Param('id') id: number, @Body() body: any): Promise<User> {
-    return await this.userService.update(id, body);
+  @Patch()
+  @UseGuards(AuthGuard('jwt'))
+  async update(@Request() req: any, @Body() body: any): Promise<User> {
+    return await this.userService.update(req.user.id, body);
   }
 
   @Delete(':id')
