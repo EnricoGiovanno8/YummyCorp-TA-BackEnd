@@ -1,4 +1,5 @@
 import { Exclude } from 'class-transformer';
+import { Card } from 'src/card/models/card.entity';
 import { Cart } from 'src/cart/models/cart.entity';
 import { Order } from 'src/order/models/order.entity';
 import {
@@ -46,6 +47,9 @@ export class User {
 
   @OneToMany(() => Order, (order) => order.user)
   orders: Order[];
+
+  @OneToMany(() => Card, (card) => card.user)
+  cards: Card[];
 
   @CreateDateColumn()
   createdAt: Date;
