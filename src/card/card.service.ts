@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Card } from './models/card.entity';
 import { CreateCardDto } from './models/dto/create-card.dto';
-import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class CardService {
@@ -12,13 +11,9 @@ export class CardService {
   ) {}
 
   async create(userId: any, data: CreateCardDto): Promise<Card> {
-    const { cvc, ...input } = data;
-
-    const hashedCvc = await bcrypt.hash(cvc, 10);
     const body = {
       user: userId,
-      ...input,
-      cvc: hashedCvc,
+      ...data
     };
     return await this.cardRepository.save(body);
   }

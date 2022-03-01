@@ -1,8 +1,23 @@
-import { Body, ClassSerializerInterceptor, Controller, Get, Post, Request, UseGuards, UseInterceptors } from '@nestjs/common';
+import {
+  Body,
+  ClassSerializerInterceptor,
+  Controller,
+  Post,
+  Request,
+  UseGuards,
+  UseInterceptors,
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { AddToCartDto } from './models/dto/add-to-cart.dto';
 import { OrderService } from './order.service';
 
 @Controller('order')
 @UseInterceptors(ClassSerializerInterceptor)
-export class OrderController {}
+export class OrderController {
+  constructor(private readonly orderService: OrderService) {}
+
+  @Post('pay')
+  @UseGuards(AuthGuard('jwt'))
+  async pay(@Request() req: any, @Body() body: any): Promise<any> {
+    return await this.orderService.pay(req.user.id, body)
+  }
+}

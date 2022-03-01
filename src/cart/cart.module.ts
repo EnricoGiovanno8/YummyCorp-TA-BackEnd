@@ -8,6 +8,7 @@ import { Cart } from './models/cart.entity';
 @Module({
   imports: [TypeOrmModule.forFeature([Cart]), AuthModule],
   controllers: [CartController],
-  providers: [CartService]
+  providers: [CartService],
+  exports: [CartService],
 })
 export class CartModule {}
