@@ -15,12 +15,6 @@ export class ProductStock {
   @Column({ default: 0 })
   stock: number;
 
-  // @Column()
-  // productId: number // product entity many to one
-
-  // @Column()
-  // sizeId: number// size entity many to one
-
   @ManyToOne(() => Product, (product) => product.productStocks, {
     onDelete: 'CASCADE',
   })

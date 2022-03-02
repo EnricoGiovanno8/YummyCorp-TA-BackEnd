@@ -13,5 +13,6 @@ import { ProductStockService } from './product-stock.service';
   imports: [TypeOrmModule.forFeature([Product, ProductStock, Size])],
   controllers: [ProductController,  UploadProductController],
   providers: [ProductService, SizeService, ProductStockService],
+  exports: [ProductStockService]
 })
 export class ProductModule {}

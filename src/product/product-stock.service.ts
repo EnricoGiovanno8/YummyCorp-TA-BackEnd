@@ -19,6 +19,10 @@ export class ProductStockService {
       relations: ['product', 'size'],
     });
   }
+  async update(id: number, data: any): Promise<ProductStock> {
+    await this.productStockRepository.update(id, data);
+    return this.findOneStock(id);
+  }
 
   async updateStockFromProduct(
     productId: any,

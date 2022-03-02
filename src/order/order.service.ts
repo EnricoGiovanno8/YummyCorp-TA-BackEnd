@@ -7,6 +7,7 @@ import { CreateOrderDto } from './models/dto/create-order.dto';
 import { CartService } from 'src/cart/cart.service';
 import { OrderItemService } from './order-item.service';
 import { CreateOrderItemDto } from './models/dto/create-order-item.dto';
+import { ProductStockService } from 'src/product/product-stock.service';
 
 @Injectable()
 export class OrderService {
@@ -15,6 +16,7 @@ export class OrderService {
     private readonly orderRepository: Repository<Order>,
     private readonly cartService: CartService,
     private readonly orderItemService: OrderItemService,
+    private readonly productStockService: ProductStockService,
   ) {}
 
   async create(data: CreateOrderDto): Promise<Order> {
@@ -50,7 +52,22 @@ export class OrderService {
             };
             await this.orderItemService
               .create(createOrderItemData)
-              .then(async () => await this.cartService.delete(cartItem.id));
+              .then(async () => {
+                const productStock =
+                  await this.productStockService.findOneStock(
+                    cartItem.productStock.id,
+                  );
+                const { stock, ...otherData } = productStock;
+                const newProductStock = {
+                  ...otherData,
+                  stock: stock - cartItem.quantity,
+                };
+                await this.productStockService.update(
+                  cartItem.productStock.id,
+                  newProductStock,
+                );
+                await this.cartService.delete(cartItem.id);
+              });
           }),
         );
         return 'PAYMENT SUCCESS';

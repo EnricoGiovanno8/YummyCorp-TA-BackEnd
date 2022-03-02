@@ -7,9 +7,15 @@ import { OrderController } from './order.controller';
 import { OrderService } from './order.service';
 import { OrderItemService } from './order-item.service';
 import { CartModule } from 'src/cart/cart.module';
+import { ProductModule } from 'src/product/product.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Order, OrderItem]), AuthModule, CartModule],
+  imports: [
+    TypeOrmModule.forFeature([Order, OrderItem]),
+    AuthModule,
+    CartModule,
+    ProductModule,
+  ],
   controllers: [OrderController],
   providers: [OrderService, OrderItemService],
 })

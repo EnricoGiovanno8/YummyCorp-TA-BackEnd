@@ -29,7 +29,7 @@ export class User {
   @Column({ default: 'User' })
   name: string;
 
-  @Column()
+  @Column({ default: '' })
   image: string;
 
   @Column({ default: UserGenderType.Both })
