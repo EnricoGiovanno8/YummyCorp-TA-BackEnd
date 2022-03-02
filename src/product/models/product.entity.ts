@@ -1,4 +1,5 @@
 import { Cart } from 'src/cart/models/cart.entity';
+import { Favourite } from 'src/favourite/models/favourite.entity';
 import { OrderItem } from 'src/order/models/order-item.entity';
 import {
   Column,
@@ -41,6 +42,9 @@ export class Product {
 
   @OneToMany(() => OrderItem, (orderItem) => orderItem.product)
   orderItems: OrderItem[];
+
+  @OneToMany(() => Favourite, (favourite) => favourite.product)
+  favourites: Favourite[];
 
   @CreateDateColumn()
   createdAt: Date;

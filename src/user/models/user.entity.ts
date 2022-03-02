@@ -1,6 +1,7 @@
 import { Exclude } from 'class-transformer';
 import { Card } from 'src/card/models/card.entity';
 import { Cart } from 'src/cart/models/cart.entity';
+import { Favourite } from 'src/favourite/models/favourite.entity';
 import { Order } from 'src/order/models/order.entity';
 import {
   Column,
@@ -50,6 +51,9 @@ export class User {
 
   @OneToMany(() => Card, (card) => card.user)
   cards: Card[];
+
+  @OneToMany(() => Favourite, (favourite) => favourite.user)
+  favourites: Favourite[];
 
   @CreateDateColumn()
   createdAt: Date;
