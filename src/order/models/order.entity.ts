@@ -27,6 +27,12 @@ export class Order {
   @ManyToOne(() => User, (user) => user.orders)
   user: User;
 
+  @Column()
+  totalItems: number
+
+  @Column()
+  totalAmount: number
+
   @OneToMany(() => OrderItem, (orderItem) => orderItem.order)
   orderItems: OrderItem[];
 

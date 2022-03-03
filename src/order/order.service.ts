@@ -38,6 +38,8 @@ export class OrderService {
         const createOrderData: CreateOrderDto = {
           user: userId,
           orderNumber,
+          totalItems: body.totalItems,
+          totalAmount: body.amount,
         };
         const newOrder = await this.create(createOrderData);
         const cart = await this.cartService.findAll(userId);

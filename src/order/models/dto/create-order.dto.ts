@@ -8,4 +8,12 @@ export class CreateOrderDto {
   @IsNotEmpty()
   @IsString()
   orderNumber: string;
+
+  @IsNotEmpty()
+  @IsInt()
+  totalItems: number;
+
+  @IsNotEmpty()
+  @IsInt()
+  totalAmount: number;
 }
