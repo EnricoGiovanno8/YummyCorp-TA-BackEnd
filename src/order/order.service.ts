@@ -19,6 +19,26 @@ export class OrderService {
     private readonly productStockService: ProductStockService,
   ) {}
 
+  async findAll(userId: number, page = 1): Promise<any> {
+    const take = 10;
+    const [favourites, total] = await this.orderRepository.findAndCount({
+      take,
+      skip: (page - 1) * take,
+      where: { user: userId },
+      order: { createdAt: 'DESC' },
+      relations: ['orderItems', 'orderItems.product', 'orderItems.productStock', 'orderItems.size'],
+    });
+
+    return {
+      data: favourites,
+      meta: {
+        total,
+        page,
+        lastPage: Math.ceil(total / take),
+      },
+    };
+  }
+
   async create(data: CreateOrderDto): Promise<Order> {
     return await this.orderRepository.save(data);
   }
