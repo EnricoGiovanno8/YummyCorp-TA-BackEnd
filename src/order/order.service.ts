@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 import { Order } from './models/order.entity';
 import Stripe from 'stripe';
 import { CreateOrderDto } from './models/dto/create-order.dto';
@@ -19,24 +19,17 @@ export class OrderService {
     private readonly productStockService: ProductStockService,
   ) {}
 
-  async findAll(userId: number, page = 1): Promise<any> {
-    const take = 10;
-    const [favourites, total] = await this.orderRepository.findAndCount({
-      take,
-      skip: (page - 1) * take,
-      where: { user: userId },
+  async findAll(userId: number, month: string): Promise<any> {
+    return await this.orderRepository.find({
+      where: { user: userId, createdAt: Like(`2022-${month}%`) },
       order: { createdAt: 'DESC' },
-      relations: ['orderItems', 'orderItems.product', 'orderItems.productStock', 'orderItems.size'],
+      relations: [
+        'orderItems',
+        'orderItems.product',
+        'orderItems.productStock',
+        'orderItems.size',
+      ],
     });
-
-    return {
-      data: favourites,
-      meta: {
-        total,
-        page,
-        lastPage: Math.ceil(total / take),
-      },
-    };
   }
 
   async create(data: CreateOrderDto): Promise<Order> {

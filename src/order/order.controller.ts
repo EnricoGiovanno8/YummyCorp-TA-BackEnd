@@ -3,7 +3,6 @@ import {
   ClassSerializerInterceptor,
   Controller,
   Get,
-  ParseIntPipe,
   Post,
   Query,
   Request,
@@ -20,8 +19,8 @@ export class OrderController {
 
   @Get()
   @UseGuards(AuthGuard('jwt'))
-  async getHistory(@Request() req: any, @Query('page', ParseIntPipe) page = 1) {
-    return await this.orderService.findAll(req.user.id, page);
+  async getHistory(@Request() req: any, @Query('month') month: string) {
+    return await this.orderService.findAll(req.user.id, month);
   }
 
   @Post('pay')
