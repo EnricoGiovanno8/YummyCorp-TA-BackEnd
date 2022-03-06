@@ -10,6 +10,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { UpdateUserDto } from './models/dto/update-user.dto';
 import { User } from './models/user.entity';
 import { UserService } from './user.service';
 
@@ -29,7 +30,7 @@ export class UserController {
 
   @Patch()
   @UseGuards(AuthGuard('jwt'))
-  async update(@Request() req: any, @Body() body: any): Promise<User> {
+  async update(@Request() req: any, @Body() body: UpdateUserDto): Promise<User> {
     return await this.userService.update(req.user.id, body);
   }
 

@@ -28,6 +28,10 @@ export class AuthService {
       throw new BadRequestException('Email already taken');
     }
 
+    if (password.length < 2 || password.length > 50) {
+      throw new BadRequestException('Password needs to be at least 2 characters and no more than 50 characters');
+    }
+
     if (password !== passwordConfirmation) {
       throw new BadRequestException('Passwords do not match');
     }
