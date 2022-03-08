@@ -34,6 +34,13 @@ export class UploadProfilePictureController {
           return callback(null, `${randomName}${extname(file.originalname)}`);
         },
       }),
+      fileFilter: function (_, file, cb) {
+        if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
+          return cb(new BadRequestException('Image Format Invalid'), false)
+        }
+    
+        cb(null, true)
+      }
     }),
   )
   async uploadFile(

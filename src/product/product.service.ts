@@ -63,8 +63,6 @@ export class ProductService {
   }
 
   async deleteProduct(id: number): Promise<any> {
-    // const product = await this.findOneProduct(id)
-    // return this.productRepository.softRemove(product);
     return this.productRepository.softDelete(id);
   }
 
