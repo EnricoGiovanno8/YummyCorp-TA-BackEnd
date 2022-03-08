@@ -1,7 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { UpdateUserDto } from './models/dto/update-user.dto';
 import { User } from './models/user.entity';
 import * as bcrypt from 'bcryptjs';
 
@@ -23,7 +22,7 @@ export class UserService {
     return await this.userRepository.save(data);
   }
 
-  async update(id: number, data: UpdateUserDto): Promise<User> {
+  async update(id: number, data: any): Promise<User> {
     const { password, ...otherData } = data;
     let newData = data;
 
