@@ -30,7 +30,7 @@ export class User {
   @Column({ default: 'User' })
   name: string;
 
-  @Column({ default: '' })
+  @Column({ default: 'profile-picture.png' })
   image: string;
 
   @Column({ default: UserGenderType.Both })
